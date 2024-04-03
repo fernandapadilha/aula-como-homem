@@ -4,6 +4,29 @@ import { reactive, ref } from 'vue'
 const titulo = ref('oi vuejs!')
 const mostrarResultado = ref(false)
 
+const categorias = [
+  {
+    id: 1,
+    nome: 'Eletrônicos'
+  },
+  {
+    id: 2,
+    nome: "Vestuário",
+  },
+  {
+    id: 3,
+    nome: 'Brinquedos',
+  },
+  {
+    id: 4,
+    nome: "Móveis",
+  },
+  {
+    id: 5,
+    nome: 'Alimentos'
+  }
+];
+
 const produto = reactive({
   nome: '',
   preco: 0,
@@ -13,6 +36,10 @@ const produto = reactive({
 
 function formatarPreco(preco) {
   return `R$ ${preco.toFixed(2).replace('.', ',')}`
+}
+
+function buscarNome(id) {
+  return categorias.find(categorias => categoria.id == id) 
 }
 </script>
 
@@ -38,9 +65,11 @@ function formatarPreco(preco) {
       </div>
       <fieldset>
         <legend>Categoria</legend>
-        <input type="checkbox" value="Categora 1" v-model="produto.categorias" />Categoria 1
-        <input type="checkbox" value="Categora 2" v-model="produto.categorias">Categoria 2
-        <input type="checkbox" value="Categora 3" v-model="produto.categorias">Categoria 3
+        <template v-for="categoria in categorias" :key="categoria.id">
+          <div>
+            <input type="checkbox" :value="categoria.id" v-model="produto.categorias"/> {{ categoria.nome }}
+          </div>
+        </template>      
       </fieldset>
 
       <button @click="mostrarResultado = !mostrarResultado">Mostrar</button>
@@ -52,6 +81,7 @@ function formatarPreco(preco) {
       <p>Preço: {{ formatarPreco(produto.preco) }}</p>
       <p>Quantidade: {{ produto.quantidade }}</p>
       <p>Categorias: {{ produto.categorias }}</p>
+      <p v-for="categoria in produto.categorias" :key="categoria">{{ buscarNome(categoria_id) }}</p>
       <p>{{ mostrarResultado }}</p>
     </div>
   </div>
